@@ -1,0 +1,17 @@
+node_modules
+build
+.svelte-kit
+.git
+.gitignore
+.vscode
+.claude
+Dockerfile
+.dockerignore
+docker
+Makefile
+README.md
+
+# Never bake env files into the image — values come from Portainer at runtime
+.env
+.env.*
+!.env.example

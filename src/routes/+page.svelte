@@ -1,15 +1,15 @@
 <script lang="ts">
   import { drawTiers, packageItemsRow1, packageItemsRow2, mfItem } from "$lib/data/content";
-  import { PUBLIC_DOWNLOAD_URL, PUBLIC_REGISTER_URL } from "$env/static/public";
+  import { env } from "$env/dynamic/public";
 
   let participants = $state(0);
 
   function goToDownload() {
-    window.open(PUBLIC_DOWNLOAD_URL, "_blank", "noopener,noreferrer");
+    window.open(env.PUBLIC_DOWNLOAD_URL, "_blank", "noopener,noreferrer");
   }
 
   function goToRegister() {
-    window.open(PUBLIC_REGISTER_URL, "_blank", "noopener,noreferrer");
+    window.open(env.PUBLIC_REGISTER_URL, "_blank", "noopener,noreferrer");
   }
 
   // Show the fixed hero title only while the hero section crosses the viewport center.

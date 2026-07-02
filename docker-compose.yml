@@ -1,0 +1,22 @@
+services:
+  ak2-tournament:
+    image: nasfong/ak2-tournament:latest
+    container_name: ak2-tournament
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      # Read at RUNTIME by the SSR server ($env/dynamic/public) —
+      # change them in Portainer and restart, no rebuild needed.
+      PUBLIC_DOWNLOAD_URL: ${PUBLIC_DOWNLOAD_URL:-https://ak2.world/articles/134}
+      PUBLIC_REGISTER_URL: ${PUBLIC_REGISTER_URL:-https://mysabay.testing.sabay.com/game-management/AK2}
+      PUBLIC_TOURNAMENT_LEADERBOARD_URL: ${PUBLIC_TOURNAMENT_LEADERBOARD_URL:-https://tournament.sabay.com/leaderboard/6a3cf86fd42a0ea3e67c177a}
+      # Public URL of the site, used by SvelteKit for CSRF/origin checks
+      # behind a reverse proxy. Set to your real domain in production.
+      ORIGIN: ${ORIGIN:-http://localhost:3000}
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s

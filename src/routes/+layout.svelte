@@ -25,18 +25,18 @@
     <nav class="flex items-center gap-6 text-[16px] font-bold text-white/90 uppercase">
       <a
         href="/"
-        class="relative transition-colors hover:text-white after:absolute after:-bottom-2 after:left-0 after:h-2 after:w-full after:origin-left after:rounded-br-4xl after:scale-x-0 after:bg-red-bright after:transition-transform after:duration-300 hover:after:scale-x-90 {page
+        class="relative transition-colors hover:text-white after:absolute after:-bottom-2 after:left-0 after:h-2 after:w-full after:origin-left after:rounded-br-4xl after:scale-x-0 after:bg-red-bright after:transition-transform after:duration-300 hover:after:scale-x-100 {page
           .url.pathname === '/'
-          ? 'text-white after:scale-x-90'
+          ? 'text-white after:scale-x-100'
           : ''}"
       >
         Home
       </a>
       <a
         href="/top-recharge"
-        class="relative transition-colors hover:text-white after:absolute after:-bottom-2 after:left-0 after:h-2 after:w-full after:origin-left after:rounded-br-4xl after:scale-x-0 after:bg-red-bright after:transition-transform after:duration-300 hover:after:scale-x-90 {page
+        class="relative transition-colors hover:text-white after:absolute after:-bottom-2 after:left-0 after:h-2 after:w-full after:origin-left after:rounded-br-4xl after:scale-x-0 after:bg-red-bright after:transition-transform after:duration-300 hover:after:scale-x-100 {page
           .url.pathname === '/top-recharge'
-          ? 'text-white after:scale-x-90'
+          ? 'text-white after:scale-x-100'
           : ''}"
       >
         Top Recharge

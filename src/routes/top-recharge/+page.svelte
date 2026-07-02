@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { PUBLIC_TOURNAMENT_LEADERBOARD_URL } from "$env/static/public";
+  import { env } from "$env/dynamic/public";
 </script>
 
 <svelte:head>
@@ -54,7 +54,7 @@
       //       );"
     >
       <iframe
-        src={PUBLIC_TOURNAMENT_LEADERBOARD_URL}
+        src={env.PUBLIC_TOURNAMENT_LEADERBOARD_URL}
         title="AK2 Ranking Leaderboard"
         class="h-[2700px] w-full border-0"
         loading="lazy"
