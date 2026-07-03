@@ -65,6 +65,42 @@ body {
 	animation: rock 2.5s ease-in-out infinite;
 }
 
+@keyframes rise {
+	from {
+		transform: translateY(160px);
+		opacity: 0;
+	}
+	to {
+		transform: translateY(-12px);
+		opacity: 1;
+	}
+}
+
+/* Sequenced after the hero title: waits 0.5s, rises for 2.5s, then the
+   infinite rocking takes over at 3s (rock delay = rise delay + duration
+   for a seamless handoff at -12px).
+   `both` fill keeps the girl hidden at the `from` state during the delay. */
+.animate-rise-rock {
+	animation:
+		rise 2.5s cubic-bezier(0.22, 1, 0.36, 1) 0.5s both,
+		rock 2.5s ease-in-out 3s infinite;
+}
+
+@keyframes title-zoom {
+	from {
+		scale: 2.6;
+		opacity: 0;
+	}
+	to {
+		scale: 1;
+		opacity: 1;
+	}
+}
+
+.animate-title-zoom {
+	animation: title-zoom 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 @media (prefers-reduced-motion: reduce) {
 	*,
 	*::before,

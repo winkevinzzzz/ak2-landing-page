@@ -10,7 +10,10 @@ services:
       # change them in Portainer and restart, no rebuild needed.
       PUBLIC_DOWNLOAD_URL: ${PUBLIC_DOWNLOAD_URL:-https://ak2.world/articles/134}
       PUBLIC_REGISTER_URL: ${PUBLIC_REGISTER_URL:-https://mysabay.testing.sabay.com/game-management/AK2}
-      PUBLIC_TOURNAMENT_LEADERBOARD_URL: ${PUBLIC_TOURNAMENT_LEADERBOARD_URL:-https://tournament.sabay.com/leaderboard/6a3cf86fd42a0ea3e67c177a}
+      PUBLIC_TOURNAMENT_LEADERBOARD_URL: ${PUBLIC_TOURNAMENT_LEADERBOARD_URL:-https://tournament.sabay.com/leaderboard}
+      PUBLIC_TOURNAMENT_ID: ${PUBLIC_TOURNAMENT_ID:-6a3cf86fd42a0ea3e67c177a}
+      # Server-side only: tournament registration count (GraphQL)
+      GRAPHQL_ENDPOINT: ${GRAPHQL_ENDPOINT:-https://gateway.testing.sabay.com/graphql}
       # Public URL of the site, used by SvelteKit for CSRF/origin checks
       # behind a reverse proxy. Set to your real domain in production.
       ORIGIN: ${ORIGIN:-http://localhost:3000}

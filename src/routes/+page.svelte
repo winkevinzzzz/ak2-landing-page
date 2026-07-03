@@ -1,8 +1,12 @@
 <script lang="ts">
   import { drawTiers, packageItemsRow1, packageItemsRow2, mfItem } from "$lib/data/content";
   import { env } from "$env/dynamic/public";
+  import type { PageProps } from "./$types";
 
-  let participants = $state(0);
+  let { data }: PageProps = $props();
+
+  // Real registration count fetched server-side from the tournament gateway.
+  const participants = $derived(data.participants);
 
   function goToDownload() {
     window.open(env.PUBLIC_DOWNLOAD_URL, "_blank", "noopener,noreferrer");
@@ -12,18 +16,6 @@
     window.open(env.PUBLIC_REGISTER_URL, "_blank", "noopener,noreferrer");
   }
 
-  // Show the fixed hero title only while the hero section crosses the viewport center.
-  let heroEl: HTMLElement;
-  let showHeroTitle = $state(true);
-
-  $effect(() => {
-    if (!heroEl) return;
-    const observer = new IntersectionObserver(([entry]) => (showHeroTitle = entry.isIntersecting), {
-      rootMargin: "-20% 0px -20% 0px",
-    });
-    observer.observe(heroEl);
-    return () => observer.disconnect();
-  });
 </script>
 
 <svelte:head>
@@ -32,11 +24,21 @@
     name="description"
     content="AK2 Attack Online 2 — special event landing page: welcome gifts, lucky draw rewards, and the new account package."
   />
+  <meta property="og:title" content="AK2 — Attack Online 2" />
+  <meta
+    property="og:description"
+    content="AK2 Attack Online 2 — special event landing page: welcome gifts, lucky draw rewards, and the new account package."
+  />
+  <meta name="twitter:title" content="AK2 — Attack Online 2" />
+  <meta
+    name="twitter:description"
+    content="AK2 Attack Online 2 — special event landing page: welcome gifts, lucky draw rewards, and the new account package."
+  />
 </svelte:head>
 
 <main>
   <!-- ===== Hero ===== -->
-  <section bind:this={heroEl} class="relative bg-cover bg-center bg-no-repeat">
+  <section class="relative bg-cover bg-center bg-no-repeat">
     <!-- Flare: top 30% of image, moved down to sit flush at bottom of Hero -->
     <img
       src="/img/flare.webp"
@@ -45,29 +47,33 @@
       decoding="async"
     />
 
-    <div
-      class="fixed left-1/2 top-[20%] sm:top-[42%] z-0 -translate-x-1/2 -translate-y-1/2 text-center"
-      class:hidden={!showHeroTitle}
-    >
-      <p
-        class="absolute left-0 top-[-0.8em] font-display text-[22px] text-white sm:text-[30px] md:text-[40px] lg:text-[52px] xl:text-[64px]"
+    <!-- Clips the fixed title to the hero's bounds: clip-path on an ancestor
+         clips fixed descendants without changing their viewport anchoring,
+         so the title can never paint over other sections. -->
+    <div class="pointer-events-none absolute inset-0 z-0" style="clip-path: inset(0);">
+      <div
+        class="animate-title-zoom fixed left-1/2 top-[25%] sm:top-[42%] -translate-x-1/2 -translate-y-1/2 text-center"
       >
-        ត្រៀមខ្លួនសម្រាប់
-      </p>
+        <p
+          class="absolute left-0 top-[-0.8em] font-display text-[22px] text-white sm:text-[30px] md:text-[40px] lg:text-[52px] xl:text-[64px]"
+        >
+          ត្រៀមខ្លួនសម្រាប់
+        </p>
 
-      <h1
-        class="whitespace-nowrap -mt-1 font-(family-name:--font-display) text-[clamp(44px,15vw,180px)]"
-        style="background: linear-gradient(180deg, #FE0404 25.81%, #A90707 67.59%); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;"
-      >
-        ការប្រកួតដ៏អស្ចារ្យ
-      </h1>
+        <h1
+          class="whitespace-nowrap  font-(family-name:--font-display) text-[clamp(44px,15vw,180px)]"
+          style="background: linear-gradient(180deg, #FE0404 25.81%, #A90707 67.59%); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;"
+        >
+          ការប្រកួតដ៏អស្ចារ្យ
+        </h1>
+      </div>
     </div>
 
     <div class="relative mx-auto min-h-[420px] max-w-6xl px-4 pt-2 sm:min-h-[480px] sm:px-6 md:min-h-[560px]">
       <img
         src="/img/girl-hero.webp"
         alt="AK2 character"
-        class="animate-rock pointer-events-none relative z-10 mx-auto h-auto w-full max-w-[280px] drop-shadow-[0_20px_40px_rgba(0,0,0,0.6)] sm:max-w-[420px] md:max-w-[480px]"
+        class="animate-rise-rock pointer-events-none relative z-1 mx-auto h-auto w-full max-w-[280px] drop-shadow-[0_20px_40px_rgba(0,0,0,0.6)] sm:max-w-[420px] md:max-w-[480px]"
         fetchpriority="high"
         decoding="async"
       />
@@ -76,14 +82,14 @@
         class="absolute inset-x-4 bottom-6 z-20 flex flex-col items-center gap-3 sm:inset-x-6 sm:bottom-10 sm:flex-row sm:flex-wrap sm:justify-end md:bottom-20"
       >
         <button
-          class="flex h-14 w-full max-w-60 items-center justify-center bg-contain bg-center bg-no-repeat font-(family-name:--font-display) text-xl text-white transition-transform hover:scale-[1.03] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--color-gold) sm:h-16 sm:w-60 sm:text-2xl"
+          class="cursor-pointer flex h-14 w-full max-w-60 items-center justify-center bg-contain bg-center bg-no-repeat font-(family-name:--font-display) text-xl text-white transition-transform hover:scale-[1.03] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--color-gold) sm:h-16 sm:w-60 sm:text-2xl"
           style="background-image: url('/img/gradient-bar.webp');"
           onclick={goToDownload}
         >
           ទាញយក
         </button>
         <button
-          class="flex h-14 w-full max-w-60 items-center justify-center bg-contain bg-center bg-no-repeat font-(family-name:--font-display) text-xl text-white transition-transform hover:scale-[1.03] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--color-gold) sm:h-16 sm:w-60 sm:text-2xl"
+          class="cursor-pointer flex h-14 w-full max-w-60 items-center justify-center bg-contain bg-center bg-no-repeat font-(family-name:--font-display) text-xl text-white transition-transform hover:scale-[1.03] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--color-gold) sm:h-16 sm:w-60 sm:text-2xl"
           style="background-image: url('/img/gradient-bar.webp');"
           onclick={goToRegister}
         >
@@ -103,10 +109,10 @@
       class="relative z-10 mx-auto flex max-w-7xl flex-col gap-8 px-4 py-10 sm:px-6 sm:py-12 lg:flex-row lg:items-center lg:gap-6 lg:pt-14 lg:pb-0"
     >
       <!-- Left: title + rules + button -->
-      <div class="flex min-w-0 flex-1 flex-col gap-6 text-center lg:pr-8 lg:pb-6 lg:text-left">
+      <div class="flex min-w-0 flex-1 flex-col gap-6 lg:pr-8 lg:pb-6">
         <div>
           <h2
-            class="font-(family-name:--font-display) text-[clamp(28px,7vw,58px)] leading-tight text-(--color-red-bright)"
+            class="font-(family-name:--font-display) text-[clamp(28px,7vw,58px)] leading-tight text-(--color-red-bright) text-center lg:text-left"
           >
             កាដូស្វាគមន៍
           </h2>
@@ -119,7 +125,7 @@
           </ol>
         </div>
         <button
-          class="flex h-14 w-full max-w-60 items-center justify-center bg-contain bg-center bg-no-repeat font-(family-name:--font-display) text-xl text-white transition-transform hover:scale-[1.03] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--color-gold) sm:h-16 sm:w-60 sm:text-2xl"
+          class="mx-auto cursor-pointer flex h-14 w-full max-w-60 items-center justify-center bg-contain bg-center bg-no-repeat font-(family-name:--font-display) text-xl text-white transition-transform hover:scale-[1.03] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--color-gold) sm:h-16 sm:w-60 sm:text-2xl lg:mx-0"
           style="background-image: url('/img/gradient-bar.webp');"
           onclick={goToRegister}
         >
@@ -231,25 +237,11 @@
         <div class="text-center sm:text-left">
           <p>ចំនួនគណនីដែលចូលរួម</p>
           <div class="mt-2 flex items-center justify-center gap-6 sm:justify-start">
-            <button
-              type="button"
-              aria-label="next"
-              class="text-2xl text-white/50 transition-colors hover:text-(--color-gold) focus-visible:outline-2 focus-visible:outline-(--color-gold)"
-              onclick={() => (participants -= 1000)}
-            >
-              &#8249;
-            </button>
+            <span aria-hidden="true" class="text-4xl text-white/50">&#8249;</span>
             <span class="font-(family-name:--font-display) text-3xl text-(--color-red-bright) sm:text-4xl"
               >{participants}</span
             >
-            <button
-              type="button"
-              aria-label="next"
-              class="text-2xl text-white/50 transition-colors hover:text-(--color-gold) focus-visible:outline-2 focus-visible:outline-(--color-gold)"
-              onclick={() => (participants += 1000)}
-            >
-              &#8250;
-            </button>
+            <span aria-hidden="true" class="text-4xl text-white/50">&#8250;</span>
           </div>
         </div>
 
@@ -504,19 +496,19 @@
                 loading="lazy"
                 decoding="async"
               />
-              <div class="absolute inset-0 flex flex-col px-4 py-3">
+              <div class="absolute inset-0 flex min-h-0 flex-col overflow-hidden px-3 py-2 sm:px-4 sm:py-3">
                 <div class="flex items-center justify-between">
-                  <span class="text-md text-white">តម្លៃក្រឹមតែ</span>
+                  <span class="whitespace-nowrap text-[10px] text-white sm:text-sm">តម្លៃក្រឹមតែ</span>
                   <span
-                    class="text-xs font-bold"
+                    class="text-[9px] font-bold sm:text-xs"
                     style="background: linear-gradient(269deg, #C48A00 5.34%, #FACC22 96.48%); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;"
                   >
                     GOLD
                   </span>
                 </div>
-                <div class="flex flex-1 items-center justify-center">
+                <div class="flex min-h-0 flex-1 items-center justify-center">
                   <span
-                    class="font-display text-5xl font-bold"
+                    class="font-display text-2xl leading-none font-bold sm:text-4xl"
                     style="background: linear-gradient(269deg, #C48A00 5.34%, #FACC22 96.48%); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;"
                     >១២៩៩</span
                   >
